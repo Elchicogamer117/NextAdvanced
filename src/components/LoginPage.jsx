@@ -96,7 +96,7 @@ export default function LoginPage() {
               </button>
             </div>
             {auth.error ? (
-              <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+              <div className="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-900" role="alert">
                 <span className="font-medium">Login Failed!</span> {auth.error}
               </div>
             ) : null}
