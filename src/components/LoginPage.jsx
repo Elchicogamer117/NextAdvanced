@@ -11,11 +11,20 @@ export default function LoginPage() {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+    auth.signIn(email, password).then(
+      () => {
+        console.log('Login success');
+      },
+      (reason) => {
+        console.log('Login Failed');
+        console.error(reason);
+        auth.setError('Invalid Username or Password');
+      }
+    );
 
-    auth.signIn(email, password).then(() => {
-      console.log('Login success');
-    });
-    // console.log(email, password);
+    // auth.signIn(email, password).then(() => {
+    //   console.log('Login success');
+    // });
   };
   return (
     <>
@@ -86,6 +95,11 @@ export default function LoginPage() {
                 Sign in
               </button>
             </div>
+            {auth.error ? (
+              <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <span className="font-medium">Login Failed!</span> {auth.error}
+              </div>
+            ) : null}
           </form>
         </div>
       </div>
