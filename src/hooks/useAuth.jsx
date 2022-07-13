@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import endPoints from 'services/api';
@@ -18,20 +18,6 @@ function useProviderAuth() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState();
 
-  // const fetchUser = useCallback(async () => {
-  //   try {
-  //     const token = Cookies.get('token');
-
-  //     if (token) {
-  //       axios.defaults.headers.Authorization = `Bearer ${token}`;
-  //       const { data: user } = await axios.get(endPoints.auth.profile);
-  //       setUser(user);
-  //     }
-  //   } catch (error) {
-  //     setUser(null);
-  //   }
-  // }, []);
-
   const signIn = async (email, password) => {
     const options = {
       headers: {
@@ -43,7 +29,6 @@ function useProviderAuth() {
     if (access_token) {
       const token = access_token.access_token;
       Cookies.set('token', token, { expires: 5 });
-      // await fetchUser();
 
       axios.defaults.headers.Authorization = `Bearer ${token}`;
       const { data: user } = await axios.get(endPoints.auth.profile);
@@ -51,8 +36,6 @@ function useProviderAuth() {
       setUser(user);
     }
   };
-
-  // useEffect(fetchUser, [fetchUser]);
 
   return {
     user,

@@ -14,6 +14,7 @@ const endPoints = {
     getProducts: `${API}/api/${version}/products/`,
     postProducts: `${API}/api/${version}/products/`,
     getProduct: (id) => `${API}/api/${version}/products/${id}`,
+    getRangeProducts: (limit, offset) => `${API}/api/${version}/products?limit=${limit}&offset=${offset}`,
     putProduct: (id) => `${API}/api/${version}/products/${id}`,
     deleteProduct: (id) => `${API}/api/${version}/products/${id}`,
   },
