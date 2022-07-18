@@ -11,18 +11,24 @@ const people = [
 import endPoints from 'services/api';
 import useFetch from 'hooks/useFetch';
 import Pager from 'components/Pager';
+import AdvancedPager from 'components/AdvancedPager';
 import { useState } from 'react';
 
 const PRODUCT_LIMIT = 8;
-const PRODUCT_OFFSET = 4;
+// const PRODUCT_OFFSET = 4;
 
 export default function Dashboard() {
-  const [offset, setOffset] = useState(PRODUCT_OFFSET);
-  const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offset));
+  const [offsetProducts, setOffsetProducts] = useState(0);
+  const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offsetProducts), offsetProducts);
+  const totalProducts = useFetch(endPoints.products.getRangeProducts(0, 0)).length;
+
+  // const [offset, setOffset] = useState(PRODUCT_OFFSET);
+  // const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offset));
   // const products = useFetch(endPoints.products.getProducts)
   console.log(products);
   return (
     <>
+      {totalProducts > 0 && <AdvancedPager totalItems={totalProducts} itemsPerPage={PRODUCT_LIMIT} setOffset={setOffsetProducts} neighbours={3}></AdvancedPager>}
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -89,7 +95,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <Pager offset={offset} setOffset={setOffset} />
+        {/* <Pager offset={offset} setOffset={setOffset} /> */}
       </div>
     </>
   );
