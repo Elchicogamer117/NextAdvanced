@@ -1,38 +1,32 @@
 import { useState } from 'react';
-import { Chart } from 'common/Chart';
-import endPoints from 'services/api';
-import useFetch from 'hooks/useFetch';
-import AdvancedPager from 'components/AdvancedPager';
+// import { Fragment } from 'react';
+import { PlusIcon } from '@heroicons/react/solid';
+import Modal from 'common/Modal';
 
-const PRODUCT_LIMIT = 40;
-// const PRODUCT_OFFSET = 4;
-
-export default function Dashboard() {
-  const [offsetProducts, setOffsetProducts] = useState(0);
-  const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offsetProducts), offsetProducts);
-  const totalProducts = useFetch(endPoints.products.getRangeProducts(0, 0)).length;
-
-  const categoryNames = products?.map((products) => products.category);
-  const categoryCount = categoryNames?.map((category) => category.name);
-  const categoryOcurrences = (list) => list?.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
-  console.log(categoryNames);
-  console.log(categoryCount);
-
-  const data = {
-    datasets: [
-      {
-        label: 'Categories',
-        data: categoryOcurrences(categoryCount),
-        borderWith: 2,
-        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', 'f3ba2f', '#2a71d0'],
-      },
-    ],
-  };
+export default function products() {
+  const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState([]);
 
   return (
     <>
-      <Chart className="mb-8 mt-2" charData={data} />
-      {totalProducts > 0 && <AdvancedPager totalItems={totalProducts} itemsPerPage={PRODUCT_LIMIT} setOffset={setOffsetProducts} neighbours={3}></AdvancedPager>}
+      <div className="lg:flex lg:items-center lg:justify-between">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Product list</h2>
+        </div>
+        <div className="mt-5 flex lg:mt-0 lg:ml-4">
+          <span className="sm:ml-3">
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-900 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
+              onClick={() => setOpen(true)}
+            >
+              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Add product
+            </button>
+          </span>
+        </div>
+      </div>
+
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -100,6 +94,10 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <Modal open={open} setOpen={setOpen}>
+        <h1> Modal</h1>
+      </Modal>
     </>
   );
 }
