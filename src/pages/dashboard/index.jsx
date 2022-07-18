@@ -10,12 +10,15 @@ const people = [
 ];
 import endPoints from 'services/api';
 import useFetch from 'hooks/useFetch';
+import Pager from 'components/Pager';
+import { useState } from 'react';
 
-const PRODUCT_LIMIT = 10;
+const PRODUCT_LIMIT = 8;
 const PRODUCT_OFFSET = 4;
 
 export default function Dashboard() {
-  const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
+  const [offset, setOffset] = useState(PRODUCT_OFFSET);
+  const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offset));
   // const products = useFetch(endPoints.products.getProducts)
   console.log(products);
   return (
@@ -86,6 +89,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <Pager offset={offset} setOffset={setOffset} />
       </div>
     </>
   );
