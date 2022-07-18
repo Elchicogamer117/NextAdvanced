@@ -1,20 +1,10 @@
-const people = [
-  {
-    name: 'Jane Cooper',
-    title: 'Regional Paradigm Technician',
-    department: 'Optimization',
-    role: 'Admin',
-    email: 'jane.cooper@example.com',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-];
 import endPoints from 'services/api';
 import useFetch from 'hooks/useFetch';
-import Pager from 'components/Pager';
 import AdvancedPager from 'components/AdvancedPager';
 import { useState } from 'react';
+import { Chart } from 'common/Chart';
 
-const PRODUCT_LIMIT = 8;
+const PRODUCT_LIMIT = 40;
 // const PRODUCT_OFFSET = 4;
 
 export default function Dashboard() {
@@ -22,12 +12,26 @@ export default function Dashboard() {
   const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offsetProducts), offsetProducts);
   const totalProducts = useFetch(endPoints.products.getRangeProducts(0, 0)).length;
 
-  // const [offset, setOffset] = useState(PRODUCT_OFFSET);
-  // const products = useFetch(endPoints.products.getRangeProducts(PRODUCT_LIMIT, offset));
-  // const products = useFetch(endPoints.products.getProducts)
-  console.log(products);
+  const categoryNames = products?.map((products) => products.category);
+  const categoryCount = categoryNames?.map((category) => category.name);
+  const categoryOcurrences = (list) => list?.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
+  console.log(categoryNames);
+  console.log(categoryCount);
+
+  const data = {
+    datasets: [
+      {
+        label: 'Categories',
+        data: categoryOcurrences(categoryCount),
+        borderWith: 2,
+        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', 'f3ba2f', '#2a71d0'],
+      },
+    ],
+  };
+
   return (
     <>
+      <Chart className="mb-8 mt-2" charData={data} />
       {totalProducts > 0 && <AdvancedPager totalItems={totalProducts} itemsPerPage={PRODUCT_LIMIT} setOffset={setOffsetProducts} neighbours={3}></AdvancedPager>}
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -95,7 +99,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {/* <Pager offset={offset} setOffset={setOffset} /> */}
       </div>
     </>
   );

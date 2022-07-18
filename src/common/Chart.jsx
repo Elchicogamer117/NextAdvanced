@@ -13,9 +13,14 @@ export const Chart = ({ charData }) => {
             text: 'Category',
             fontSize: 20,
           },
-          legend: {
-            display: true,
-            position: 'right',
+          plugins: {
+            legend: {
+              display: true,
+              position: 'right',
+              // labels: {
+              //   color: 'rgb(255, 99, 132)',
+              // },
+            },
           },
         }}
       />
