@@ -11,7 +11,7 @@ const endPoints = {
     postUsers: `${API}/api/${version}/users`,
   },
   products: {
-    getProducts: `${API}/api/${version}/products/`,
+    getAllProducts: `${API}/api/${version}/products/`,
     postProducts: `${API}/api/${version}/products/`,
     getProduct: (id) => `${API}/api/${version}/products/${id}`,
     getRangeProducts: (limit, offset) => `${API}/api/${version}/products?limit=${limit}&offset=${offset}`,
