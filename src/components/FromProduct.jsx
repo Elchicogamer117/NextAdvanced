@@ -4,7 +4,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { ValidationSchema } from 'common/ValidationSchema';
 import { addProduct } from 'services/api/products';
 
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const formRef = useRef(null);
 
   const {
@@ -16,7 +16,6 @@ export default function FormProduct() {
   });
 
   const onSubmit = (data) => {
-    //console.log(data);
     const dataFormat = {
       title: data.title,
       price: data.price,
@@ -24,10 +23,24 @@ export default function FormProduct() {
       categoryId: parseInt(data.category),
       images: [data.images[0].name],
     };
-    //console.log(dataFormat);
-    addProduct(dataFormat).then((response) => {
-      console.log(response);
-    });
+    addProduct(dataFormat)
+      .then(() => {
+        setAlert({
+          active: true,
+          message: 'Product added succesfully',
+          type: 'success',
+          autoClose: false,
+        });
+        setOpen(false);
+      })
+      .catch((error) => {
+        setAlert({
+          active: true,
+          message: error.message,
+          type: 'error',
+          autoClose: false,
+        });
+      });
   };
 
   return (

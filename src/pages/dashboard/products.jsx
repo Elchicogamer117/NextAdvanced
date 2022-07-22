@@ -10,7 +10,7 @@ import Alert from 'common/Alert';
 export default function Products() {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState([]);
-  const [alert, setAlert, toggleAlert] = useAlert();
+  const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
     async function getProduct() {
