@@ -2,10 +2,12 @@ import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { ValidationSchema } from 'common/ValidationSchema';
-import { addProduct } from 'services/api/products';
+import { addProduct, updateProduct } from 'services/api/products';
+import { useRouter } from 'next/router';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
+  const router = useRouter();
 
   const {
     register,
@@ -16,6 +18,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
     const dataFormat = {
       title: data.title,
       price: data.price,
@@ -23,30 +26,36 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       categoryId: parseInt(data.category),
       images: [data.images[0].name],
     };
-    addProduct(dataFormat)
-      .then(() => {
-        setAlert({
-          active: true,
-          message: 'Product added succesfully',
-          type: 'success',
-          autoClose: true,
-        });
-        setOpen(false);
-      })
-      .catch((error) => {
-        setAlert({
-          active: true,
-          message: error.message,
-          type: 'error',
-          autoClose: false,
-        });
+    console.log(dataFormat);
+    if (product) {
+      updateProduct(product.id, dataFormat).then((response) => {
+        router.push('/dashboard/products/');
+        console.log(response);
       });
+    } else {
+      addProduct(dataFormat)
+        .then(() => {
+          setAlert({
+            active: true,
+            message: 'Product added succesfully',
+            type: 'success',
+            autoClose: true,
+          });
+          setOpen(false);
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          });
+        });
+    }
   };
 
   useEffect(() => {
-    // Se coge la referencia al nodo de HTML del select
     const categoryTag = document.querySelector('#category');
-    // Se cambiar el valor del nodo por el valor del id; eso hace que el valor del <option> cambie tambien
     categoryTag.value = product?.category?.id;
   }, [product]);
 
@@ -139,7 +148,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-blue-800 hover:text-blue-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-800"
                       >
                         <span>Upload a file</span>
-                        <input defaultValue={product?.images} id="images" name="images" {...register('images')} type="file" className="sr-only" />
+                        <input defaultValue={product?.images} {...register('images')} id="images" name="images" type="file" className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
