@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { ValidationSchema } from 'common/ValidationSchema';
 import { addProduct } from 'services/api/products';
 
-export default function FormProduct({ setOpen, setAlert }) {
+export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
 
   const {
@@ -43,6 +43,13 @@ export default function FormProduct({ setOpen, setAlert }) {
       });
   };
 
+  useEffect(() => {
+    // Se coge la referencia al nodo de HTML del select
+    const categoryTag = document.querySelector('#category');
+    // Se cambiar el valor del nodo por el valor del id; eso hace que el valor del <option> cambie tambien
+    categoryTag.value = product?.category?.id;
+  }, [product]);
+
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
       <div className="overflow-hidden">
@@ -53,11 +60,12 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Title
               </label>
               <input
+                defaultValue={product?.title}
+                {...register('title')}
                 type="text"
                 name="title"
                 id="title"
                 className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.title && 'border-red-600'}`}
-                {...register('title')}
               />
               {errors.title && <span className="text-red-600 font-thin text-sm">{errors.title.message}</span>}
             </div>
@@ -66,8 +74,9 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Price
               </label>
               <input
-                type="number"
+                defaultValue={product?.price}
                 {...register('price')}
+                type="number"
                 name="price"
                 id="price"
                 className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.price && 'border-red-600'}`}
@@ -79,6 +88,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Category
               </label>
               <select
+                defaultValue={product?.category}
                 id="category"
                 name="category"
                 {...register('category')}
@@ -98,6 +108,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Description
               </label>
               <textarea
+                defaultValue={product?.description}
                 name="description"
                 id="description"
                 {...register('description')}
@@ -128,7 +139,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-blue-800 hover:text-blue-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-800"
                       >
                         <span>Upload a file</span>
-                        <input id="images" name="images" {...register('images')} type="file" className="sr-only" />
+                        <input defaultValue={product?.images} id="images" name="images" {...register('images')} type="file" className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
