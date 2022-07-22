@@ -1,41 +1,7 @@
 import { useRef } from 'react';
-// import { ProductSchema } from './Validator';
 import { useForm } from 'react-hook-form';
-import * as Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
-
-// type Inputs = {
-//   title: string,
-//   price: string,
-//   category: number,
-//   description: string,
-//   images: FileList,
-// };
-
-const imageExtentions = ['image/png', 'image/jpg', 'image/jpeg'];
-
-const ValidationSchema = Joi.object({
-  title: Joi.string().min(5).required(),
-  price: Joi.number().greater(0).precision(2).required(),
-  category: Joi.string().valid('1', '2', '3', '4', '5').required(),
-  description: Joi.string().required(),
-  images: Joi.any()
-    .custom(function (file, { error }) {
-      if (!file[0]) {
-        return error('file.required');
-      }
-
-      if (!imageExtentions.includes(file[0].type)) {
-        return error('file.invalid');
-      }
-
-      return file;
-    })
-    .messages({
-      'file.required': 'File is required',
-      'file.invalid': 'The file must be one of the following png, jpg or jpeg.',
-    }),
-});
+import { ValidationSchema } from 'common/ValidationSchema';
 
 export default function FormProduct() {
   const formRef = useRef(null);
@@ -48,24 +14,10 @@ export default function FormProduct() {
     resolver: joiResolver(ValidationSchema),
   });
 
-  const onSubmit = (d) => {
-    console.log(d);
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const formData = new FormData(formRef.current);
-  //   const data = {
-  //     title: formData.get('title'),
-  //     price: parseInt(formData.get('price')),
-  //     description: formData.get('description'),
-  //     categoryId: parseInt(formData.get('category')),
-  //     images: [formData.get('images').name],
-  //   };
-  //   console.log(data);
-  // const validation = await ProductSchema.validate(data);
-  // console.log({ validation });
-  //};
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
       <div className="overflow-hidden">
@@ -79,10 +31,10 @@ export default function FormProduct() {
                 type="text"
                 name="title"
                 id="title"
-                className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.title && 'border-red-300'}`}
+                className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.title && 'border-red-600'}`}
                 {...register('title')}
               />
-              {errors.title && <span className="text-red-400 font-thin text-sm">{errors.title.message}</span>}
+              {errors.title && <span className="text-red-600 font-thin text-sm">{errors.title.message}</span>}
             </div>
             <div className="col-span-6 sm:col-span-3">
               <label htmlFor="price" className="block text-sm font-medium text-gray-700">
@@ -93,9 +45,9 @@ export default function FormProduct() {
                 {...register('price')}
                 name="price"
                 id="price"
-                className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.price && 'border-red-300'}`}
+                className={`mt-1 focus:ring-blue-800 focus:border-blue-800 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.price && 'border-red-600'}`}
               />
-              {errors.price && <span className="text-red-400 font-thin text-sm">{errors.price.message}</span>}
+              {errors.price && <span className="text-red-600 font-thin text-sm">{errors.price.message}</span>}
             </div>
             <div className="col-span-6">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
@@ -126,9 +78,9 @@ export default function FormProduct() {
                 {...register('description')}
                 autoComplete="description"
                 rows="3"
-                className={`form-textarea mt-1 block w-full focus:ring-blue-800 focus:border-blue-800 shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.description && 'border-red-300'}`}
+                className={`form-textarea mt-1 block w-full focus:ring-blue-800 focus:border-blue-800 shadow-sm sm:text-sm border-gray-300 rounded-md ${errors.description && 'border-red-600'}`}
               />
-              {errors.description && <span className="text-red-400 font-thin text-sm">{errors.description.message}</span>}
+              {errors.description && <span className="text-red-600 font-thin text-sm">{errors.description.message}</span>}
             </div>
             <div className="col-span-6">
               <div>
@@ -158,7 +110,7 @@ export default function FormProduct() {
                     <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                   </div>
                 </div>
-                {errors.images && <span className="text-red-400 font-thin text-sm text-center w-full">{errors.images.message}</span>}
+                {errors.images && <span className="text-red-600 font-thin text-sm text-center w-full">{errors.images.message}</span>}
               </div>
             </div>
           </div>
