@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { ValidationSchema } from 'common/ValidationSchema';
+import { addProduct } from 'services/api/products';
 
 export default function FormProduct() {
   const formRef = useRef(null);
@@ -15,7 +16,18 @@ export default function FormProduct() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    //console.log(data);
+    const dataFormat = {
+      title: data.title,
+      price: data.price,
+      description: data.description,
+      categoryId: parseInt(data.category),
+      images: [data.images[0].name],
+    };
+    //console.log(dataFormat);
+    addProduct(dataFormat).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
