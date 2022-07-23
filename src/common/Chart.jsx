@@ -15,7 +15,7 @@ export const Chart = ({ charData }) => {
           },
           plugins: {
             legend: {
-              display: true,
+              display: false,
               position: 'right',
               // labels: {
               //   color: 'rgb(255, 99, 132)',

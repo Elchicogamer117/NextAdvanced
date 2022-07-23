@@ -1,13 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
-import { PlusIcon, XCircleIcon } from '@heroicons/react/solid';
+import Link from 'next/link';
 import axios from 'axios';
 import Modal from 'common/Modal';
+import Alert from 'common/Alert';
 import FormProduct from 'components/FromProduct';
 import endPoints from 'services/api';
-import useAlert from 'hooks/useAlert';
-import Alert from 'common/Alert';
 import { deleteProduct } from 'services/api/products';
-import Link from 'next/link';
+import useAlert from 'hooks/useAlert';
+import { PlusIcon, XCircleIcon } from '@heroicons/react/solid';
 
 export default function Products() {
   const [open, setOpen] = useState(false);
@@ -48,10 +49,10 @@ export default function Products() {
           <span className="sm:ml-3">
             <button
               type="button"
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-900 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
+              className="inline-flex items-center px-4 py-2 mb-5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-900 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
               onClick={() => setOpen(true)}
             >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              <PlusIcon className="mr-2 h-5 w-5" aria-hidden="true" />
               Add product
             </button>
           </span>
@@ -63,18 +64,18 @@ export default function Products() {
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="bg-slate-900">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Name
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Category
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       Price
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                       ID
                     </th>
                     <th scope="col" className="relative px-6 py-3">
@@ -88,23 +89,21 @@ export default function Products() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {products?.map((product) => (
                     <tr key={`Product-item-${product.id}`}>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-2 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
                             <img className="h-10 w-10 rounded-full" src={product.images[0]} alt="images" />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">{product.title}</div>
-                            {/* <div className="text-sm text-gray-500">{product.email}</div> */}
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{product.category.name}</div>
-                        {/* <div className="text-sm text-gray-500">{product.description}</div> */}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">${product.price}</span>
+                        <span className="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-800 text-white">${product.price}</span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

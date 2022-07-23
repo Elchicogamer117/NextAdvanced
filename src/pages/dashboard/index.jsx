@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { Chart } from 'common/Chart';
 import endPoints from 'services/api';
 import useFetch from 'hooks/useFetch';
 import AdvancedPager from 'components/AdvancedPager';
 
-const PRODUCT_LIMIT = 40;
+const PRODUCT_LIMIT = 20;
 // const PRODUCT_OFFSET = 4;
 
 export default function Dashboard() {
@@ -21,18 +22,19 @@ export default function Dashboard() {
   const data = {
     datasets: [
       {
-        label: 'Categories',
         data: categoryOcurrences(categoryCount),
         borderWith: 2,
-        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', 'f3ba2f', '#2a71d0'],
+        backgroundColor: ['#1e40af', '#1e40af', '#1e40af', '#1e40af', '#1e40af'],
       },
     ],
   };
 
   return (
     <>
-      <Chart className="mb-8 mt-2" charData={data} />
-      {totalProducts > 0 && <AdvancedPager totalItems={totalProducts} itemsPerPage={PRODUCT_LIMIT} setOffset={setOffsetProducts} neighbours={3}></AdvancedPager>}
+      <div className="w-5/6 ml-auto mr-auto mb-10 mt-2">
+        <Chart charData={data} />
+      </div>
+      <AdvancedPager className="bg-black" totalItems={totalProducts} itemsPerPage={PRODUCT_LIMIT} setOffset={setOffsetProducts} neighbours={3}></AdvancedPager>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -47,16 +49,10 @@ export default function Dashboard() {
                       Category
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Price
+                      Description
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      ID
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Edit</span>
-                    </th>
-                    <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Delate</span>
+                      Price
                     </th>
                   </tr>
                 </thead>
@@ -74,23 +70,14 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="w-auto px-6 py-4 ">
                         <div className="text-sm text-gray-900">{product.category.name}</div>
-                        {/* <div className="text-sm text-gray-500">{product.description}</div> */}
+                      </td>
+                      <td className="w-auto px-6 py-4 ">
+                        <div className="text-sm text-gray-500">{product.description}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">${product.price}</span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="/dashboard" className="text-indigo-600 hover:text-indigo-900">
-                          Edit
-                        </a>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="/dashboard" className="text-indigo-600 hover:text-indigo-900">
-                          Delete
-                        </a>
+                        <span className="px-4 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-800 text-white">${product.price}</span>
                       </td>
                     </tr>
                   ))}

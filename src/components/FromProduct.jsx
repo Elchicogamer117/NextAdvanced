@@ -18,7 +18,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     const dataFormat = {
       title: data.title,
       price: data.price,
@@ -26,11 +25,9 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       categoryId: parseInt(data.category),
       images: [data.images[0].name],
     };
-    console.log(dataFormat);
     if (product) {
-      updateProduct(product.id, dataFormat).then((response) => {
+      updateProduct(product.id, dataFormat).then(() => {
         router.push('/dashboard/products/');
-        console.log(response);
       });
     } else {
       addProduct(dataFormat)
@@ -48,7 +45,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
             active: true,
             message: error.message,
             type: 'error',
-            autoClose: false,
+            autoClose: true,
           });
         });
     }
@@ -132,7 +129,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 <label htmlFor="images" className="block text-sm font-medium text-gray-700">
                   Cover photo
                 </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div className="mt-1 flex justify-center px-6 py-2 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
                     <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                       <path
@@ -163,7 +160,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
         <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-800 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-900 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
           >
             Save
           </button>
